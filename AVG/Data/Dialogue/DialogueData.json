@@ -1,0 +1,56 @@
+[
+	{
+		"Id": "CH01_0001",
+		"Scene": "Scene_01",
+		"Cg": "CG_01",
+		"Bgm": "Armada",
+		"Sfx": "DawDong"
+	},
+	{
+		"Id": "CH01_0002",
+		"Name": "A",
+		"Content": "1",
+		"Scene": "Scene_01",
+		"MiddleChar": "char_A",
+		"Sfx": "BiBiLaBo",
+		"Voice": "1"
+	},
+	{
+		"Id": "CH01_0003",
+		"Cg": "CG_02",
+		"Option01": "Option1:CH01_0001",
+		"Option02": "Option2:CH01_0004",
+		"Bgm": "Armada"
+	},
+	{	
+		"Id": "CH01_0004",
+		"Name": "B",
+		"Content": "2",
+		"Scene": "Scene_02",
+		"LeftChar": "char_A",
+		"RightChar": "char_B",
+		"Bgm": "Battle hymn",
+		"Voice": "2"
+	},
+	{	
+		"Id": "CH01_0005",
+		"Name": "C",
+		"Content": "3",
+		"Scene": "Scene_03",
+		"LeftChar": "Char_A",
+		"MiddleChar": "Char_C",
+		"RightChar": "char_B",
+		"Bgm": "Battle hymn",
+		"Voice": "3"
+	},
+	{	
+		"Id": "CH01_0006",
+		"Name": "D",
+		"Content": "4",
+		"Scene": "Scene_03",
+		"Cg": "CG_02",
+		"Bgm": "Breakdown",
+		"Sfx": "DingDing",
+		"Voice": "4"
+	}
+]
