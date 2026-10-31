@@ -1,0 +1,202 @@
+[gd_scene format=3 uid="uid://bkn4pcgl3nmm1"]
+
+[ext_resource type="Script" uid="uid://c5hcy84wa1v5j" path="res://Scripts/Config/ConfigManager.cs" id="1_xqyj1"]
+[ext_resource type="Script" uid="uid://c67eyqu6ft7tq" path="res://Scripts/Config/ConfigPanel.cs" id="2_t042y"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_r17qd"]
+
+[node name="ConfigManager" type="CanvasLayer" unique_id=1648102699 node_paths=PackedStringArray("ConfigPanelUI")]
+script = ExtResource("1_xqyj1")
+ConfigPanelUI = NodePath("ConfigPanel")
+
+[node name="ConfigPanel" type="Control" parent="." unique_id=1711606974 node_paths=PackedStringArray("TextSpeedSlider", "TextSpeedPreviewLabel", "AutoDelaySlider", "MasterVolumeSlider", "MusicVolumeSlider", "SfxVolumeSlider", "VoiceVolumeSlider", "WindowModeOptionButton", "ResolutionOptionButton", "LanguageOptionButton", "CloseButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_t042y")
+TextSpeedSlider = NodePath("MarginContainer2/VBoxContainer/Container/TextSpeed")
+TextSpeedPreviewLabel = NodePath("MarginContainer2/VBoxContainer/VBoxContainer/Textpreview")
+AutoDelaySlider = NodePath("MarginContainer2/VBoxContainer/VBoxContainer2/AutoSpeed")
+MasterVolumeSlider = NodePath("MarginContainer2/VBoxContainer/VBoxContainer3/MasterVolume")
+MusicVolumeSlider = NodePath("MarginContainer2/VBoxContainer/VBoxContainer4/MusicVolume")
+SfxVolumeSlider = NodePath("MarginContainer2/VBoxContainer/VBoxContainer5/SFXVolume")
+VoiceVolumeSlider = NodePath("MarginContainer2/VBoxContainer/VBoxContainer6/VoiceVolume")
+WindowModeOptionButton = NodePath("MarginContainer2/VBoxContainer/VBoxContainer7/WindowMode")
+ResolutionOptionButton = NodePath("MarginContainer2/VBoxContainer/VBoxContainer8/Resolution")
+LanguageOptionButton = NodePath("MarginContainer2/VBoxContainer/VBoxContainer9/Language")
+CloseButton = NodePath("MarginContainer/Close Button")
+
+[node name="TextureRect" type="TextureRect" parent="ConfigPanel" unique_id=1161683342]
+modulate = Color(0.24115604, 0.24115604, 0.24115604, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_r17qd")
+
+[node name="Label" type="Label" parent="ConfigPanel" unique_id=1386009898]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 50
+text = "Config"
+
+[node name="MarginContainer2" type="MarginContainer" parent="ConfigPanel" unique_id=48317378]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConfigPanel/MarginContainer2" unique_id=1227005495]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Container" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=1474407024]
+layout_mode = 2
+
+[node name="TextSpeedLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/Container" unique_id=244605322]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "文字顯示速度"
+
+[node name="TextSpeed" type="HSlider" parent="ConfigPanel/MarginContainer2/VBoxContainer/Container" unique_id=1846440162]
+layout_mode = 2
+value = 50.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=1779453708]
+layout_mode = 2
+
+[node name="TextPreviewLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer" unique_id=1806235986]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "文字顯示預覽"
+
+[node name="Textpreview" type="RichTextLabel" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer" unique_id=1708405902]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=995860954]
+layout_mode = 2
+
+[node name="AUTOSpeedLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer2" unique_id=184269086]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "AUTO顯示速度"
+
+[node name="AutoSpeed" type="HSlider" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer2" unique_id=548975574]
+layout_mode = 2
+value = 100.0
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=1550345294]
+layout_mode = 2
+
+[node name="MasterVolumeLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer3" unique_id=2007194124]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "全局音量"
+
+[node name="MasterVolume" type="HSlider" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer3" unique_id=1088518320]
+layout_mode = 2
+value = 100.0
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=1916946483]
+layout_mode = 2
+
+[node name="MusicVolumeLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer4" unique_id=1588010139]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "音樂音量"
+
+[node name="MusicVolume" type="HSlider" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer4" unique_id=738352893]
+layout_mode = 2
+value = 70.0
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=1941993417]
+layout_mode = 2
+
+[node name="SFXVolumeLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer5" unique_id=1734090926]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "音效音量"
+
+[node name="SFXVolume" type="HSlider" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer5" unique_id=1273106964]
+layout_mode = 2
+value = 70.0
+
+[node name="VBoxContainer6" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=504465155]
+layout_mode = 2
+
+[node name="VoiceVolumeLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer6" unique_id=2004410869]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "對話音量"
+
+[node name="VoiceVolume" type="HSlider" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer6" unique_id=1767359908]
+layout_mode = 2
+value = 70.0
+
+[node name="VBoxContainer7" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=1857649334]
+layout_mode = 2
+
+[node name="WindowModeLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer7" unique_id=81647323]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "畫面模式"
+
+[node name="WindowMode" type="OptionButton" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer7" unique_id=1753316470]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="VBoxContainer8" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=202662153]
+layout_mode = 2
+
+[node name="ResolutionLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer8" unique_id=916316304]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "畫面模式"
+
+[node name="Resolution" type="OptionButton" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer8" unique_id=1240004284]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="VBoxContainer9" type="VBoxContainer" parent="ConfigPanel/MarginContainer2/VBoxContainer" unique_id=319077245]
+layout_mode = 2
+
+[node name="LanguageLabel" type="Label" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer9" unique_id=2016905940]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "語言"
+
+[node name="Language" type="OptionButton" parent="ConfigPanel/MarginContainer2/VBoxContainer/VBoxContainer9" unique_id=816617778]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ConfigPanel" unique_id=418313090]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -323.0
+offset_top = -168.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Close Button" type="Button" parent="ConfigPanel/MarginContainer" unique_id=953042546]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "Return"

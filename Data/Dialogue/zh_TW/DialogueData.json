@@ -1,0 +1,67 @@
+[
+	{
+		"Id": "CH01_0001",
+		"Scene": "Scene_01",
+		"Cg": "CG_01",
+		"Bgm": "Armada",
+		"Sfx": "DawDong"
+	},
+	{
+		"Id": "CH01_0002",
+		"Command": "Wait:1",
+		"Name": "A",
+		"Content": "1",
+		"Scene": "Scene_01",
+		"Char02": "char_A",
+		"Sfx": "BiBiLaBo",
+		"Voice": "1"
+	},
+	{
+		"Id": "CH01_0003",
+		"Cg": "CG_02",
+		"Option01": "I Love You:CH01_0004::A_LOVE+1",
+		"Option02": "I Don't Love You:CH01_0004::A_LOVE-1",
+		"Bgm": "Armada"
+	},
+	{	
+		"Id": "CH01_0004",
+		"Command": "GoTo:CH01_0006:A_Love_Me",
+		"Name": "B",
+		"Content": "Oh My God",
+		"Scene": "Scene_02",
+		"Char01": "char_A",
+		"Char05": "char_B",
+		"Bgm": "Battle hymn",
+		"Voice": "2"
+	},
+	{	
+		"Id": "CH02_0001",
+		"Command": "GoTo:CH02_0006",
+		"Name": "C",
+		"Content": "No Love You",
+		"Scene": "Scene_03",
+		"Char01": "Char_A",
+		"Char02": "Char_B",
+		"Char05": "char_C",
+		"Bgm": "Battle hymn",
+		"Voice": "3"
+	},
+	{	
+		"Id": "CH02_0002",
+		"Name": "D",
+		"Content": "Love You",
+		"Scene": "Scene_03",
+		"Cg": "CG_02",
+		"Bgm": "Breakdown",
+		"Sfx": "DingDing",
+		"Voice": "4"
+	},
+	{	
+		"Id": "CH02_0003",
+		"Name": "E",
+		"Content": "End",
+		"Scene": "Scene_03",
+		"Bgm": "Breakdown",
+		"Voice": "5"
+	}
+]

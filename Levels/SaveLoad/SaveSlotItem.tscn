@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://bf0te8yw4ypot"]
+
+[ext_resource type="Script" uid="uid://b6m17rddbuv4c" path="res://Scripts/SaveLoad/SaveSlotItem.cs" id="1_4h6bw"]
+
+[node name="SaveSlotItem" type="Button" unique_id=291227017 node_paths=PackedStringArray("Thumbnail", "SlotNumLabel", "ChapterLabel", "TimeLabel")]
+custom_minimum_size = Vector2(650, 175)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1270.0
+offset_bottom = -905.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+script = ExtResource("1_4h6bw")
+Thumbnail = NodePath("MarginContainer/HBoxContainer/PreviewThumbnailTexture")
+SlotNumLabel = NodePath("MarginContainer/HBoxContainer/VBoxContainer/SlotNumLabel")
+ChapterLabel = NodePath("MarginContainer/HBoxContainer/VBoxContainer/ChapterLabel")
+TimeLabel = NodePath("MarginContainer/HBoxContainer/VBoxContainer/TimeLabel")
+
+[node name="SlotTexture" type="TextureRect" parent="." unique_id=2072365337]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=106591644]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1025177304]
+layout_mode = 2
+
+[node name="PreviewThumbnailTexture" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=2107075314]
+custom_minimum_size = Vector2(240, 135)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1326986064]
+layout_mode = 2
+
+[node name="SlotNumLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1921106819]
+layout_mode = 2
+
+[node name="TimeLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=2116317272]
+layout_mode = 2
+
+[node name="ChapterLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1503747720]
+layout_mode = 2

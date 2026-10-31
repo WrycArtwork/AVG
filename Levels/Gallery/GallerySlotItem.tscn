@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://bibrf1kfl5q0w"]
+
+[ext_resource type="Script" uid="uid://123j6jc2gd1o" path="res://Scripts/Gallery/GallerySlotItem.cs" id="1_hrfdi"]
+
+[node name="GallerySlotItem" type="TextureButton" unique_id=737017619 node_paths=PackedStringArray("ThumbnailImage", "CgsLabel")]
+custom_minimum_size = Vector2(320, 180)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -90.0
+offset_right = 160.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hrfdi")
+ThumbnailImage = NodePath("ThumbnailImage")
+CgsLabel = NodePath("CgsLabel")
+
+[node name="ThumbnailImage" type="TextureRect" parent="." unique_id=87508759]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CgsLabel" type="Label" parent="." unique_id=1754973972]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 32

@@ -1,0 +1,46 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="AVG"
+run/main_scene="uid://c77agv4pno4s4"
+config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
+config/icon="res://Assets/icon.svg"
+
+[audio]
+
+buses/default_bus_layout="uid://dtlsca76iikh5"
+
+[autoload]
+
+SaveLoadManager="*uid://di0qq47kkjx4e"
+ConfigManager="*uid://bkn4pcgl3nmm1"
+GalleryManager="*uid://bxxxnadfdbjvk"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/subwindows/embed_subwindows=false
+window/stretch/mode="canvas_items"
+window/per_pixel_transparency/allowed=true
+
+[dotnet]
+
+project/assembly_name="AVG"
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"

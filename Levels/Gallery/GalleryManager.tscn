@@ -1,0 +1,244 @@
+[gd_scene format=3 uid="uid://bxxxnadfdbjvk"]
+
+[ext_resource type="Script" uid="uid://6xslpac66am0" path="res://Scripts/Gallery/GalleryManager.cs" id="1_dkc8h"]
+[ext_resource type="Script" uid="uid://3hqh0pkxsbjx" path="res://Scripts/Gallery/GalleryPanel.cs" id="2_hvpq4"]
+[ext_resource type="PackedScene" uid="uid://bibrf1kfl5q0w" path="res://Levels/Gallery/GallerySlotItem.tscn" id="3_pcgyx"]
+[ext_resource type="PackedScene" uid="uid://bfuvp1rjdj4lj" path="res://Levels/Gallery/MusicSlotItem.tscn" id="4_s4a8h"]
+[ext_resource type="Script" uid="uid://d3t6eod5nwrje" path="res://Scripts/Gallery/GalleryPreviewPanel.cs" id="5_rxkw0"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_bup2x"]
+
+[node name="GalleryManager" type="CanvasLayer" unique_id=2092380768 node_paths=PackedStringArray("GalleryPanelUI")]
+script = ExtResource("1_dkc8h")
+GalleryPanelUI = NodePath("GalleryPanel")
+
+[node name="GalleryPanel" type="Control" parent="." unique_id=1509112370 node_paths=PackedStringArray("PageLabel", "MusicPlayer", "StoryCgTabButton", "BgCgTabButton", "MusicTabButton", "CloseButton", "PrevPageButton", "NextPageButton", "StoryGrid", "BgGrid", "MusicContainer", "PreviewPanel")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_hvpq4")
+PageLabel = NodePath("MarginContainer/VBoxContainer/HBoxContainer/PageLabel")
+MusicPlayer = NodePath("MusicPlayer")
+StoryCgTabButton = NodePath("MarginContainer/VBoxContainer/HeaderContainer/TabsContainer/StoryButton")
+BgCgTabButton = NodePath("MarginContainer/VBoxContainer/HeaderContainer/TabsContainer/BackgroundButton")
+MusicTabButton = NodePath("MarginContainer/VBoxContainer/HeaderContainer/TabsContainer/MusicButton")
+CloseButton = NodePath("MarginContainer2/Close Button")
+PrevPageButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer/PrevButton")
+NextPageButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer/NextButton")
+StoryGrid = NodePath("MarginContainer/VBoxContainer/MarginContainer/StoryContainer")
+BgGrid = NodePath("MarginContainer/VBoxContainer/MarginContainer/BgContainer")
+MusicContainer = NodePath("MarginContainer/VBoxContainer/MarginContainer/MusicContainer")
+SlotItemPrefab = ExtResource("3_pcgyx")
+MusicItemPrefab = ExtResource("4_s4a8h")
+PreviewPanel = NodePath("../PreviewPanel")
+
+[node name="TextureRect" type="TextureRect" parent="GalleryPanel" unique_id=1270998302]
+modulate = Color(0.24115604, 0.24115604, 0.24115604, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("CanvasTexture_bup2x")
+
+[node name="Label" type="Label" parent="GalleryPanel" unique_id=111925736]
+layout_mode = 0
+offset_right = 170.0
+offset_bottom = 69.0
+theme_override_font_sizes/font_size = 50
+text = "Gallery"
+
+[node name="MarginContainer" type="MarginContainer" parent="GalleryPanel" unique_id=1696759982]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GalleryPanel/MarginContainer" unique_id=1175605055]
+layout_mode = 2
+
+[node name="HeaderContainer" type="HBoxContainer" parent="GalleryPanel/MarginContainer/VBoxContainer" unique_id=687611764]
+layout_mode = 2
+
+[node name="TabsContainer" type="HBoxContainer" parent="GalleryPanel/MarginContainer/VBoxContainer/HeaderContainer" unique_id=622298921]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="StoryButton" type="Button" parent="GalleryPanel/MarginContainer/VBoxContainer/HeaderContainer/TabsContainer" unique_id=1238480843]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "StoryCG"
+
+[node name="BackgroundButton" type="Button" parent="GalleryPanel/MarginContainer/VBoxContainer/HeaderContainer/TabsContainer" unique_id=928741555]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "BackgroundCG"
+
+[node name="MusicButton" type="Button" parent="GalleryPanel/MarginContainer/VBoxContainer/HeaderContainer/TabsContainer" unique_id=1207898165]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Music"
+
+[node name="MarginContainer" type="MarginContainer" parent="GalleryPanel/MarginContainer/VBoxContainer" unique_id=893980499]
+custom_minimum_size = Vector2(0, 700)
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="StoryContainer" type="GridContainer" parent="GalleryPanel/MarginContainer/VBoxContainer/MarginContainer" unique_id=946777359]
+layout_mode = 2
+columns = 4
+
+[node name="BgContainer" type="GridContainer" parent="GalleryPanel/MarginContainer/VBoxContainer/MarginContainer" unique_id=2136938830]
+layout_mode = 2
+columns = 4
+
+[node name="MusicContainer" type="VBoxContainer" parent="GalleryPanel/MarginContainer/VBoxContainer/MarginContainer" unique_id=648981939]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GalleryPanel/MarginContainer/VBoxContainer" unique_id=316357047]
+layout_mode = 2
+alignment = 1
+
+[node name="PrevButton" type="Button" parent="GalleryPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1335420392]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Prev"
+
+[node name="PageLabel" type="Label" parent="GalleryPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1224833996]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "1 / 1"
+
+[node name="NextButton" type="Button" parent="GalleryPanel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2024899606]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Next
+"
+
+[node name="MarginContainer2" type="MarginContainer" parent="GalleryPanel" unique_id=1090208186]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -323.0
+offset_top = -168.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Close Button" type="Button" parent="GalleryPanel/MarginContainer2" unique_id=2042087822]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "Return"
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="GalleryPanel" unique_id=2111707931]
+
+[node name="PreviewPanel" type="Control" parent="." unique_id=1772887211 node_paths=PackedStringArray("FullImageView", "ImageLabel", "PageLabel", "PrevButton", "NextButton", "CloseButton", "ToggleButton", "UiContainer")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_rxkw0")
+FullImageView = NodePath("FullImageView")
+ImageLabel = NodePath("UIContainer/VBoxContainer/ImageLabel")
+PageLabel = NodePath("UIContainer/PageLabel")
+PrevButton = NodePath("UIContainer/VBoxContainer/HBoxContainer/PrevButton")
+NextButton = NodePath("UIContainer/VBoxContainer/HBoxContainer/NextButton")
+CloseButton = NodePath("UIContainer/MarginContainer2/Close Button")
+ToggleButton = NodePath("UIContainer/VBoxContainer/HBoxContainer/ToggleButton")
+UiContainer = NodePath("UIContainer")
+
+[node name="FullImageView" type="TextureRect" parent="PreviewPanel" unique_id=1247161285]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UIContainer" type="MarginContainer" parent="PreviewPanel" unique_id=1470682276]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="PageLabel" type="Label" parent="PreviewPanel/UIContainer" unique_id=485042879]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 48
+text = "1 / 1"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PreviewPanel/UIContainer" unique_id=1777990563]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="ImageLabel" type="Label" parent="PreviewPanel/UIContainer/VBoxContainer" unique_id=1409023297]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 48
+text = "CG"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PreviewPanel/UIContainer/VBoxContainer" unique_id=155481423]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PrevButton" type="Button" parent="PreviewPanel/UIContainer/VBoxContainer/HBoxContainer" unique_id=1307243455]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Prev"
+
+[node name="NextButton" type="Button" parent="PreviewPanel/UIContainer/VBoxContainer/HBoxContainer" unique_id=1591327075]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Next
+"
+
+[node name="ToggleButton" type="Button" parent="PreviewPanel/UIContainer/VBoxContainer/HBoxContainer" unique_id=1435139717]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "隱藏UI"
+
+[node name="Label" type="Label" parent="PreviewPanel/UIContainer/VBoxContainer" unique_id=1395152972]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "左：上一張 / 右：下一張 / Backspace：隱藏UI / ESC：關閉鑑賞"
+
+[node name="MarginContainer2" type="MarginContainer" parent="PreviewPanel/UIContainer" unique_id=301260667]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Close Button" type="Button" parent="PreviewPanel/UIContainer/MarginContainer2" unique_id=953894383]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "Return"

@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://c155dfal4clgt"]
+
+[ext_resource type="Script" uid="uid://ccfqxxnfk1hv6" path="res://Scripts/Log/LogItem.cs" id="1_hr6rs"]
+
+[node name="LogItem" type="Control" unique_id=944943431 node_paths=PackedStringArray("DialoguePanel", "NameLabel", "ContentLabel", "VoiceReplayButton", "OptionBoxPanel", "OptionsLabel")]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource("1_hr6rs")
+DialoguePanel = NodePath("DialoguePanel")
+NameLabel = NodePath("DialoguePanel/VBoxContainer/NameLabel")
+ContentLabel = NodePath("DialoguePanel/VBoxContainer/MarginContainer/HBoxContainer/ContentLabel")
+VoiceReplayButton = NodePath("DialoguePanel/VBoxContainer/MarginContainer/HBoxContainer/VoiceButton")
+OptionBoxPanel = NodePath("OptionPanel")
+OptionsLabel = NodePath("OptionPanel/OptionLabel")
+
+[node name="DialoguePanel" type="PanelContainer" parent="." unique_id=1862130083]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialoguePanel" unique_id=1352154787]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="DialoguePanel/VBoxContainer" unique_id=845693471]
+layout_mode = 2
+text = "Name"
+
+[node name="MarginContainer" type="MarginContainer" parent="DialoguePanel/VBoxContainer" unique_id=452362060]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DialoguePanel/VBoxContainer/MarginContainer" unique_id=2021964396]
+custom_minimum_size = Vector2(1, 0)
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="ContentLabel" type="RichTextLabel" parent="DialoguePanel/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1109081921]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Content"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="VoiceButton" type="Button" parent="DialoguePanel/VBoxContainer/MarginContainer/HBoxContainer" unique_id=501751973]
+layout_mode = 2
+text = "Voice"
+
+[node name="OptionPanel" type="PanelContainer" parent="." unique_id=1795914252]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="OptionPanel" unique_id=274296133]
+layout_mode = 2
+
+[node name="OptionLabel" type="RichTextLabel" parent="OptionPanel" unique_id=2062511648]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Option
+"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0

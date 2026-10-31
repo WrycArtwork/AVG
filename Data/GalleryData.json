@@ -1,0 +1,52 @@
+{
+	"StoryCgs": [
+		{
+			"GroupId": "CG_01",
+			"GroupName": "序章",
+			"ThumbnailPath": "res://Assets/CG/thumbnails/CG_01_thumb.JPG",
+			"CgsPaths": [
+				"res://Assets/CG/CG_01.JPG",
+				"res://Assets/CG/CG_02.JPG"
+			]
+		}
+	],
+	
+	"BgCgs": [
+		{
+			"GroupId": "Scene_01",
+			"GroupName": "廁所",
+			"ThumbnailPath": "",
+			"CgsPaths": [
+				"res://Assets/Scene/Scene_01.JPG"
+			]
+		},
+		{
+			"GroupId": "Scene_02",
+			"GroupName": "餐廳",
+			"ThumbnailPath": "",
+			"CgsPaths": [
+				"res://Assets/Scene/Scene_02.JPG"
+			]
+		},
+		{
+			"GroupId": "Scene_03",
+			"GroupName": "公園",
+			"ThumbnailPath": "",
+			"CgsPaths": [
+				"res://Assets/Scene/Scene_03.JPG"
+			]
+		}
+	],
+	"Musics": [
+		{
+			"TrackId": "Armada",
+			"TrackTitle": "Armada",
+			"AudioPath": "res://Assets/Audio/BGM/Armada.wav"
+		},
+		{
+			"TrackId": "Battle hymn",
+			"TrackTitle": "Battle hymn",
+			"AudioPath": "res://Assets/Audio/BGM/Battle hymn.wav"
+		}
+	]
+}
