@@ -20,10 +20,13 @@ public partial class ConfigPanel : Control
     [Export] public OptionButton ResolutionOptionButton;
     [Export] public OptionButton LanguageOptionButton;
     
-    
+    [ExportGroup("Buttons")]
     [Export] public Button CloseButton;
+    [Export] public Button ResetButton;
+    [Export] public Button TitleButton;
 
     public event Action ConfigPanelClose;
+    public event Action ReturnToTitle;
     
     private ConfigData _configData;
     private Tween _previewTween;
@@ -47,6 +50,8 @@ public partial class ConfigPanel : Control
         SetupOptionButton();
 
         if (CloseButton != null) CloseButton.Pressed += ClosePanel;
+        if (ResetButton != null) ResetButton.Pressed += OnResetPressed;
+        if (TitleButton != null) TitleButton.Pressed += OnReturnPressed;
         
         if (TextSpeedSlider != null)
         {
@@ -140,12 +145,17 @@ public partial class ConfigPanel : Control
         }
     }
 
-    public void OpenPanel(ConfigData configData)
+    public void OpenPanel(ConfigData configData, bool canReturnToTitle = true)
     {
         _configData = configData;
         SyncUIWithData();
         Visible = true;
         PlayTextPreview();
+
+        if (TitleButton != null)
+        {
+            TitleButton.Visible = canReturnToTitle;
+        }
     }
 
     public void ClosePanel()
@@ -153,6 +163,21 @@ public partial class ConfigPanel : Control
         Visible = false;
         _previewTween?.Kill();
         ConfigPanelClose?.Invoke();
+    }
+
+    private void OnResetPressed()
+    {
+        if (_configData == null) return;
+        _configData.Reset();
+        SyncUIWithData();
+        ConfigManager.Instance.ApplyAllSettings();
+        PlayTextPreview();
+    }
+
+    private void OnReturnPressed()
+    {
+        ClosePanel();
+        ReturnToTitle?.Invoke();
     }
 
     private void SyncUIWithData()

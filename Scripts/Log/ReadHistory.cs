@@ -1,52 +1,29 @@
-using Godot;
+﻿using Godot;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using AVG.Scripts;
 
 public static class ReadHistory
 {
-    private const string FilePath = "user://read_history.json";
-    private static readonly HashSet<string> _readDialogueIds = new();
-
-    static ReadHistory()
-    {
-        LoadReadHistory();
-    }
+    private const string FilePath = GamePaths.GalleryData;
+    private static readonly HashSet<string> _readDialogueIds = new(StringComparer.OrdinalIgnoreCase);
 
     public static void MarkAsRead(string id)
     {
         if (string.IsNullOrEmpty(id)) return;
-
-        if (_readDialogueIds.Add(id)) SaveReadHistory();
+        _readDialogueIds.Add(id.Trim());
     }
 
     public static bool IsRead(string id)
     {
-        if (string.IsNullOrEmpty(id)) return false;
-        return _readDialogueIds.Contains(id);
+        if (string.IsNullOrWhiteSpace(id)) return false;
+        return _readDialogueIds.Contains(id.Trim());
     }
 
-    private static void SaveReadHistory()
+    public static void Clear()
     {
-        using var file = FileAccess.Open(FilePath, FileAccess.ModeFlags.Write);
-        if (file == null) return;
-        var json = JsonSerializer.Serialize(_readDialogueIds);
-        file.StoreString(json);
-    }
-
-    private static void LoadReadHistory()
-    {
-        if (!FileAccess.FileExists(FilePath)) return;
-
-        using var file = FileAccess.Open(FilePath, FileAccess.ModeFlags.Read);
-        if (file == null) return;
-        var json = file.GetAsText();
-        var list = JsonSerializer.Deserialize<List<string>>(json);
-        if (list != null)
-        {
-            _readDialogueIds.Clear();
-            foreach (var id in list) _readDialogueIds.Add(id);
-        }
+        _readDialogueIds.Clear();
     }
 }
 

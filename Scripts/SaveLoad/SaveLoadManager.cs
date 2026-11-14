@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using AVG.Scripts;
 
 namespace AVG.Scripts;
 
@@ -47,12 +48,12 @@ public partial class SaveLoadManager : Node
     
     public void OpenSaveMenu()
     {
-        SaveLoadPanelUI?.OpenPanel(global::SaveLoadPanel.Mode.Save);
+        SaveLoadPanelUI?.OpenPanel(SaveLoadPanel.Mode.Save);
     }
 
     public void OpenLoadMenu()
     {
-        SaveLoadPanelUI?.OpenPanel(global::SaveLoadPanel.Mode.Load);
+        SaveLoadPanelUI?.OpenPanel(SaveLoadPanel.Mode.Load);
     }
 
     private async void HandleSave(int slotIndex, Viewport viewport)
@@ -83,7 +84,7 @@ public partial class SaveLoadManager : Node
         else
         {
             PendingLoadData = data;
-            GetTree().ChangeSceneToFile("res://Levels/dialogue_manager.tscn");
+            GetTree().ChangeSceneToFile(GamePaths.SceneDialogue);
         }
     }
 }

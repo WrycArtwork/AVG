@@ -4,13 +4,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using AVG.Scripts;
 
-public class GalleryDatabase
-{
-    public List<CgGroupData> StoryCgs { get; set; } = new();
-    public List<CgGroupData> BgCgs { get; set; } = new();
-    public List<MusicTrackData> Musics { get; set; } = new();
-}
-
 public partial class GalleryPanel : Control
 {
     [Export] public int SlotsPerPage = 8;
@@ -80,7 +73,7 @@ public partial class GalleryPanel : Control
 
     private void LoadGalleryData()
     {
-        const string path = "res://Data/GalleryData.json";
+        const string path = GamePaths.GalleryData;
         if (!FileAccess.FileExists(path)) return;
         
         using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);

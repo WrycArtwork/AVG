@@ -1,6 +1,9 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using AVG.Scripts;
+
+namespace AVG.Scripts;
 
 public partial class SaveLoadPanel : Control
 {

@@ -24,6 +24,7 @@ buses/default_bus_layout="uid://dtlsca76iikh5"
 SaveLoadManager="*uid://di0qq47kkjx4e"
 ConfigManager="*uid://bkn4pcgl3nmm1"
 GalleryManager="*uid://bxxxnadfdbjvk"
+InputPromptManager="*uid://l3snhqd8nsmn"
 
 [display]
 

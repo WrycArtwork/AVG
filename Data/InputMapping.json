@@ -1,0 +1,50 @@
+{
+  "ui_next": {
+	"keys": {
+	  "KeyboardMouse": ["Left", "A", "WheelUp"],
+	  "Xbox": ["DpadLeft", "LeftShoulder"],
+	  "PlayStation": ["DpadLeft", "LeftShoulder"]
+	},
+	"icons": {
+	  "KeyboardMouse": "key-arrow-right",
+	  "Xbox": "xbox-cross2-right-outlined",
+	  "PlayStation": "playstation-cross-right"
+	}
+  },
+  "ui_prev": {
+	"keys": {
+	  "KeyboardMouse": ["Right", "D", "WheelDown"],
+	  "Xbox": ["DpadRight", "RightShoulder"],
+	  "PlayStation": ["DpadRight", "RightShoulder"]
+	},
+	"icons": {
+	  "KeyboardMouse": "key-arrow-left",
+	  "Xbox": "xbox-cross2-left-outlined",
+	  "PlayStation": "playstation-cross-left"
+	}
+  },
+  "ui_hide_ui": {
+	"keys": {
+	  "KeyboardMouse": ["BackSpace"],
+	  "Xbox": ["Y"],
+	  "PlayStation": ["Y"]
+	},
+	"icons": {
+	  "KeyboardMouse": "key-backspace",
+	  "Xbox": "xbox-btn-y-outlined",
+	  "PlayStation": "playstation-btn-triangle"
+	}
+  },
+  "ui_close": {
+	"keys": {
+	  "KeyboardMouse": ["Escape"],
+	  "Xbox": ["B"],
+	  "PlayStation": ["B"]
+	},
+	"icons": {
+	  "KeyboardMouse": "key-esc",
+	  "Xbox": "xbox-menu-outlined",
+	  "PlayStation": "playstation-menu"
+	}
+  }
+}

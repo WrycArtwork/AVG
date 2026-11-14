@@ -20,7 +20,7 @@ public partial class DialogueManager : Control, ISaveableContext
 		public string Command { get; set; }		//特殊指令
 		public string Name { get; set; }		//說話者名字
 		public string Content { get; set; }		//文本內容
-		public string Scene { get; set; }		//場景
+		public string Background { get; set; }		//場景
 		public string Cg { get; set; }			//CG插畫
 		public string Transition { get; set; }	//轉場特效
 		public string Char01 { get; set; }	//角色一立繪檔名
@@ -41,7 +41,6 @@ public partial class DialogueManager : Control, ISaveableContext
 	[ExportGroup("Dialogues")]
 	[Export] public Label NameLabel;
 	[Export] public RichTextLabel ContentLabel;
-	[Export] public float TypeSpeed = 0.05f;
 	[Export] public TextureRect SceneNode;
 	[Export] public TextureRect CgNode;
 	[Export] public TextureRect Char01Node;
@@ -55,6 +54,10 @@ public partial class DialogueManager : Control, ISaveableContext
 	[Export] public AudioStreamPlayer SfxPlayer;
 	[Export] public VBoxContainer OptionsContainer;
 	[Export] public PanelContainer DialoguePanel;
+	[Export] public Control NextIndicator;
+	private Tween _indicatorTween;
+	private Vector2 _indicatorOrigPos;
+	private Tween _indicatorFadeTween;
 	
 	[ExportGroup("Quick Buttons")]
 	[Export] public Button AutoButton;
@@ -67,11 +70,12 @@ public partial class DialogueManager : Control, ISaveableContext
 	[ExportGroup("Quick Panels")]
 	[Export] public LogPanel LogPanelUI;
 
+	[ExportGroup("DialogueConfigs")]
+	[Export] public float TypeSpeed = 0.05f;
 	[Export] public double AutoDelayTime = 1.5;
-	private const double VoiceBufferDelay = 0.1;
 	[Export] public float SkipDelayTime = 0.04f;
-	
-	
+	private const double VoiceBufferDelay = 0.1;
+
 	private List<DialogueData> _dialoguesList = [];
 	private readonly Dictionary<string, DialogueData> _dialoguesDict = new();
 	//Option
@@ -102,6 +106,20 @@ public partial class DialogueManager : Control, ISaveableContext
 	private double _autoWaitTimer = 0.0;
 	private double _voiceBufferTimer = 0.0;
 	private bool _hasPlayedVoiceCurrentLine = false;
+	
+	//__Custom Settings Function__
+	private void StartIndicatorTween()
+	{
+		_indicatorTween = CreateTween().SetLoops();
+		
+		//Jump
+		_indicatorTween.TweenProperty(NextIndicator, "position:y", _indicatorOrigPos.Y + 6.0f, 0.4f)
+			.SetTrans(Tween.TransitionType.Sine)
+			.SetEase(Tween.EaseType.InOut);
+		_indicatorTween.TweenProperty(NextIndicator, "position:y", _indicatorOrigPos.Y, 0.4f)
+			.SetTrans(Tween.TransitionType.Sine)
+			.SetEase(Tween.EaseType.InOut);
+	}
 	
 	//__Code__
 	public override void _Ready()
@@ -139,10 +157,22 @@ public partial class DialogueManager : Control, ISaveableContext
 			ConfigManager.Instance.OnConfigChanged += ApplyConfig;
 			ConfigManager.Instance.ConfigPanelClose += () => { _isMenuOpen = false; };
 		}
+		
+		StartIndicatorTween();
 	}
 
-	
-	
+	public override async void _Notification(int what)
+	{
+		if (what == NotificationWMCloseRequest)
+		{
+			if (GetTree()?.CurrentScene is DialogueManager dialogue)
+			{
+				await dialogue.CreateAutoSaveDataAsync();
+			}
+			GetTree().Quit();
+		}
+	}
+
 	public override void _ExitTree()
 	{
 		SaveLoadManager.Instance?.UnregisterContext(this);
@@ -282,7 +312,7 @@ public partial class DialogueManager : Control, ISaveableContext
 	
 	private void LoadJson()
 	{
-		const string conditionPath =  "res://Data/Conditions.json";
+		const string conditionPath =  GamePaths.ConditionsDataDir;
 		if (!FileAccess.FileExists(conditionPath)) return;
 		
 		using var condFile = FileAccess.Open(conditionPath, FileAccess.ModeFlags.Read);
@@ -297,7 +327,7 @@ public partial class DialogueManager : Control, ISaveableContext
 			}
 		}
 		
-		const string chapterPath =  "res://Data/ChaptersMapping.json";
+		const string chapterPath =  GamePaths.ChaptersMappingData;
 		if (FileAccess.FileExists(chapterPath))
 		{
 			using var chapterFile = FileAccess.Open(chapterPath, FileAccess.ModeFlags.Read);
@@ -313,10 +343,10 @@ public partial class DialogueManager : Control, ISaveableContext
 		}
 		
 		string currentLanguage = ConfigManager.Instance?.CurrentConfig.Language ?? "zh_TW";
-		string dialoguePath = $"res://Data/Dialogue/{currentLanguage}/DialogueData.json";
+		string dialoguePath = GamePaths.DialogueData(currentLanguage);
 		if (!FileAccess.FileExists(dialoguePath))
 		{
-			dialoguePath = "res://Data/Dialogue/zh_TW/DialogueData.json";
+			dialoguePath = GamePaths.DialogueData("zh_TW");
 		}
 
 		using var diaFile = FileAccess.Open(dialoguePath, FileAccess.ModeFlags.Read);
@@ -368,7 +398,6 @@ public partial class DialogueManager : Control, ISaveableContext
 	// Performance Core 
 	private async void ExecutePerformance(DialogueData line)
 	{
-		
 		// Reset Timer
 		_autoWaitTimer = 0.0;
 		_voiceBufferTimer = 0.0;
@@ -376,20 +405,20 @@ public partial class DialogueManager : Control, ISaveableContext
 		_hasPlayedVoiceCurrentLine = !string.IsNullOrEmpty(line.Voice);
 		
 		// Update
-		UpdateImage(line.Scene, ref _currentSceneName, SceneNode, "Scene");
-		UpdateImage(line.Cg, ref _currentCgName, CgNode, "CG");
+		UpdateImage(line.Background, ref _currentSceneName, SceneNode, GamePaths.BackgroundDir);
+		UpdateImage(line.Cg, ref _currentCgName, CgNode, GamePaths.CgDir);
 		
-		UpdateImage(line.Char01, ref _currentCharacterLeft, Char01Node, "Character");
-		UpdateImage(line.Char02, ref _currentCharacterRight, Char02Node, "Character");
-		UpdateImage(line.Char03, ref _currentCharacterMiddle, Char03Node, "Character");
-		UpdateImage(line.Char04, ref _currentCharacterMiddle, Char04Node, "Character");
-		UpdateImage(line.Char05, ref _currentCharacterMiddle, Char05Node, "Character");
+		UpdateImage(line.Char01, ref _currentCharacterLeft, Char01Node, GamePaths.CharacterDir);
+		UpdateImage(line.Char02, ref _currentCharacterRight, Char02Node, GamePaths.CharacterDir);
+		UpdateImage(line.Char03, ref _currentCharacterMiddle, Char03Node, GamePaths.CharacterDir);
+		UpdateImage(line.Char04, ref _currentCharacterMiddle, Char04Node, GamePaths.CharacterDir);
+		UpdateImage(line.Char05, ref _currentCharacterMiddle, Char05Node, GamePaths.CharacterDir);
 
 		if (!_isSkipping)
 		{
-			UpdateBgm(line.Bgm, 7.0f, "Audio/BGM");
-			UpdateSfx(line.Sfx, "Audio/SFX");
-			UpdateVoice(line.Voice, "Audio/Voice");
+			UpdateBgm(line.Bgm, 7.0f);
+			UpdateSfx(line.Sfx);
+			UpdateVoice(line.Voice);
 		}
 		
 		// Mark as read history for skip. 
@@ -401,9 +430,9 @@ public partial class DialogueManager : Control, ISaveableContext
 			GalleryManager.Instance?.UnlockCg(line.Cg);
 		}
 
-		if (!string.IsNullOrEmpty(line.Scene))
+		if (!string.IsNullOrEmpty(line.Background))
 		{
-			GalleryManager.Instance?.UnlockCg(line.Scene);
+			GalleryManager.Instance?.UnlockCg(line.Background);
 		}
 
 		if (!string.IsNullOrEmpty(line.Bgm))
@@ -439,7 +468,15 @@ public partial class DialogueManager : Control, ISaveableContext
 		NameLabel.Text = line.Name;
 		ContentLabel.Text = line.Content;
 		
-		string voicePath = !string.IsNullOrEmpty(line.Voice) ? GetValidAudioPath($"res://Assets/Audio/Voice/{line.Voice}") : null;
+		// Stop and hide NextIndicator
+		if (NextIndicator != null)
+		{
+			_indicatorFadeTween?.Kill();
+			_indicatorFadeTween = CreateTween();
+			_indicatorFadeTween.TweenProperty(NextIndicator, "modulate:a", 0.0f, 0.1f);
+		}
+
+		string voicePath = GamePaths.GetValidAudio(GamePaths.VoiceDir, line.Voice);
 		LogPanelUI?.AddLogItem(line.Name, line.Content, voicePath);
 		
 		// Reset and start typewriter animation
@@ -450,13 +487,18 @@ public partial class DialogueManager : Control, ISaveableContext
 		_typeTween = CreateTween();
 		_typeTween.TweenProperty(ContentLabel, "visible_ratio", 1.0f, duration);
 		
-		// Command execute before click
-		await PreInputCommand(line);
-		
 		_typeTween.Finished += async () =>
 		{
 			CheckAndCreateOptions(line); //Create Option
-
+			
+			// Show NextIndicator
+			if (!_isWaitingForOption && NextIndicator != null)
+			{
+				_indicatorFadeTween?.Kill();
+				_indicatorFadeTween = CreateTween();
+				_indicatorFadeTween.TweenProperty(NextIndicator, "modulate:a", 1.0f, 0.1f);
+			}
+			
 			if (_isSkipping && !_isWaitingForOption && !_isMenuOpen)
 			{
 				if (SkipDelayTime > 0)
@@ -467,6 +509,8 @@ public partial class DialogueManager : Control, ISaveableContext
 				AdvanceDialogue();
 			}
 		}; 
+		// Command execute before click
+		await PreInputCommand(line);
 	}
 	
 	public override void _Input(InputEvent @event)
@@ -621,8 +665,8 @@ public partial class DialogueManager : Control, ISaveableContext
 				_isSkipping = false;
 				
 				LogPanelUI?.AddOptionsItem(buttonText);
-				
 				ApplyStateChange(stateChange);
+				CreateAutoSaveData();
 				
 				if (!string.IsNullOrEmpty(targetNodeId))
 				{
@@ -639,7 +683,7 @@ public partial class DialogueManager : Control, ISaveableContext
 			OptionsContainer.AddChild(optionButton);
 		}
 	}
-	private void UpdateImage(string newImageName, ref string currentImageName, TextureRect imageNode, string folderName)
+	private void UpdateImage(string newImageName, ref string currentImageName, TextureRect imageNode, string targetDir)
 	{
 		if (imageNode == null) return;
 		if (newImageName == currentImageName) return;
@@ -652,9 +696,7 @@ public partial class DialogueManager : Control, ISaveableContext
 		}
 		else
 		{
-			var basePath = $"res://Assets/{folderName}/{newImageName}";
-			var filePath = GetValidImagePath(basePath);
-
+			var filePath = GamePaths.GetValidImage(targetDir, newImageName);
 			if (string.IsNullOrEmpty(filePath)) return;
 			var newtexture = GD.Load<Texture2D>(filePath);
 			imageNode.Texture = newtexture;
@@ -687,7 +729,7 @@ public partial class DialogueManager : Control, ISaveableContext
 		}
 	}
 	
-	private void UpdateBgm(string newBgmName, float fadeDuration, string folderName)
+	private void UpdateBgm(string newBgmName, float fadeDuration)
 	{
 		if (BgmPlayerA == null || BgmPlayerB == null) return;
 		
@@ -703,7 +745,7 @@ public partial class DialogueManager : Control, ISaveableContext
 			return;
 		}
 		
-		var bgmPath = GetValidAudioPath($"res://Assets/{folderName}/{newBgmName}");
+		var bgmPath = GamePaths.GetValidAudio(GamePaths.BgmDir, newBgmName);
 
 		if (string.IsNullOrEmpty(bgmPath)) return;
 		var newBgm = GD.Load<AudioStream>(bgmPath);
@@ -738,12 +780,12 @@ public partial class DialogueManager : Control, ISaveableContext
 			_bgmFadeInTween.TweenProperty(BgmPlayerA, "volume_db", 0.0f, fadeInTime);
 		}
 	}
-	private void UpdateSfx(string newSfxName, string folderName)
+	private void UpdateSfx(string newSfxName)
 	{
 		if (SfxPlayer == null) return;
 		
 		if (string.IsNullOrEmpty(newSfxName)) return;
-		var sfxPath = GetValidAudioPath($"res://Assets/{folderName}/{newSfxName}");
+		var sfxPath = GamePaths.GetValidAudio(GamePaths.SfxDir, newSfxName);
 		var newSfx = GD.Load<AudioStream>(sfxPath);
 		
 		if (SfxPlayer.GetStreamPlayback() is AudioStreamPlaybackPolyphonic playback)
@@ -759,7 +801,7 @@ public partial class DialogueManager : Control, ISaveableContext
 			}
 		}
 	}
-	private void UpdateVoice(string newVoiceName, string folderName)
+	private void UpdateVoice(string newVoiceName)
 	{
 		if (VoicePlayer == null) return;
 
@@ -772,7 +814,7 @@ public partial class DialogueManager : Control, ISaveableContext
 		if (_isSkipping) return;
 		
 		if (string.IsNullOrEmpty(newVoiceName)) return;
-		var voicePath = GetValidAudioPath($"res://Assets/{folderName}/{newVoiceName}");
+		var voicePath = GamePaths.GetValidAudio(GamePaths.VoiceDir, newVoiceName);
 		
 		var newVoice = GD.Load<AudioStream>(voicePath);
 		VoicePlayer.Stream = newVoice;
@@ -794,21 +836,6 @@ public partial class DialogueManager : Control, ISaveableContext
 			playerToFadeOut.Stop();
 			playerToFadeOut.Stream = null;
 		};
-	}
-	private static string GetValidImagePath(string imagePath)
-	{
-		if (FileAccess.FileExists(imagePath + ".png")) return imagePath + ".png";
-		if (FileAccess.FileExists(imagePath + ".jpg")) return imagePath + ".jpg";
-		
-		return null;
-	}
-	private static string GetValidAudioPath(string audioPath)
-	{
-		if (FileAccess.FileExists(audioPath + ".wav")) return audioPath + ".wav";
-		if (FileAccess.FileExists(audioPath + ".mp3")) return audioPath + ".mp3";
-		if (FileAccess.FileExists(audioPath + ".ogg")) return audioPath + ".ogg";
-		
-		return null;
 	}
 	private bool EvaluateCondition(string conditionId)
 	{
@@ -907,7 +934,6 @@ public partial class DialogueManager : Control, ISaveableContext
 	}
 
 	//Save/Load
-
 	public SaveData CreateSaveData()
 	{
 		if (_currentIndex < 0 || _currentIndex >= _dialoguesList.Count) return null;
@@ -920,6 +946,41 @@ public partial class DialogueManager : Control, ISaveableContext
 			DialogueId = currentLine.Id,
 			GameConditions = new Godot.Collections.Dictionary<string, int>(_gameConditions)
 		};
+	}
+	
+	public void CreateAutoSaveData()
+	{
+		if (_currentIndex < 0 || _currentIndex >= _dialoguesList.Count) return;
+		var autoData = CreateSaveData();
+		HideAllOverlayPanels();
+		SaveSystem.SaveGame(0, autoData, GetViewport());
+	}
+
+	public async System.Threading.Tasks.Task CreateAutoSaveDataAsync()
+	{
+		if (_currentIndex < 0 || _currentIndex >= _dialoguesList.Count) return;
+		var autoData = CreateSaveData();
+		if (autoData == null) return;
+		HideAllOverlayPanels();
+		await ToSignal(RenderingServer.Singleton, RenderingServer.SignalName.FramePostDraw);
+		SaveSystem.SaveGame(0, autoData, GetViewport());
+	}
+
+	private void HideAllOverlayPanels()
+	{
+		if (ConfigManager.Instance?.ConfigPanelUI != null)
+		{
+			ConfigManager.Instance.ConfigPanelUI.Visible = false;
+		}
+		if (LogPanelUI != null)
+		{
+			LogPanelUI.Visible = false;
+		}
+
+		if (SaveLoadManager.Instance?.SaveLoadPanelUI != null)
+		{
+			SaveLoadManager.Instance.SaveLoadPanelUI.Visible = false;
+		}
 	}
 
 	public void RestoreFromSaveData(SaveData data)
@@ -943,7 +1004,7 @@ public partial class DialogueManager : Control, ISaveableContext
 			var prevLine = _dialoguesList[i];
 			if (!string.IsNullOrEmpty(prevLine.Content))
 			{
-				string voice = !string.IsNullOrEmpty(prevLine.Voice) ? GetValidAudioPath($"res://Assets/Audio/Voice/{prevLine.Voice}") : null;
+				string voice = GamePaths.GetValidAudio(GamePaths.VoiceDir, prevLine.Voice);
 				LogPanelUI?.AddLogItem(prevLine.Name, prevLine.Content, voice);
 			}
 		}
@@ -959,23 +1020,23 @@ public partial class DialogueManager : Control, ISaveableContext
 
 	private void RestoreEnvirommentState(int targetIndex)
 	{
-		string lastScene = "";
+		string lastBackground = "";
 		string lastBgm = "";
 
 		for (int i = targetIndex; i >= 0; i--)
 		{
 			var line = _dialoguesList[i];
-			if (string.IsNullOrEmpty(lastScene) && !string.IsNullOrWhiteSpace(line.Scene))
-				lastScene = line.Scene.Trim();
+			if (string.IsNullOrEmpty(lastBackground) && !string.IsNullOrWhiteSpace(line.Background))
+				lastBackground = line.Background.Trim();
 			if (string.IsNullOrEmpty(lastBgm) && !string.IsNullOrWhiteSpace(line.Bgm))
 				lastBgm = line.Bgm.Trim();
-			if (string.IsNullOrEmpty(lastScene) && !string.IsNullOrEmpty(lastBgm))
+			if (string.IsNullOrEmpty(lastBackground) && !string.IsNullOrEmpty(lastBgm))
 				break;
 		}
 		
-		if (!string.IsNullOrWhiteSpace(lastScene)) UpdateImage(lastScene, ref _currentSceneName, SceneNode, "Scene");
+		if (!string.IsNullOrWhiteSpace(lastBackground)) UpdateImage(lastBackground, ref _currentSceneName, SceneNode, "Scene");
 		
-		if (!string.IsNullOrWhiteSpace(lastBgm)) UpdateBgm(lastBgm, 1.0f, "Audio/BGM");
+		if (!string.IsNullOrWhiteSpace(lastBgm)) UpdateBgm(lastBgm, 1.0f);
 	}
 
 	private string GetChapterTitle(string dialogueId)

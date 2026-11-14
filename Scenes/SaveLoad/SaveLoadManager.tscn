@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://di0qq47kkjx4e"]
+
+[ext_resource type="Script" uid="uid://cs4c351x84048" path="res://Scripts/SaveLoad/SaveLoadManager.cs" id="1_7585q"]
+[ext_resource type="PackedScene" uid="uid://88tay3w53gbh" path="res://Scenes/SaveLoad/SaveLoadPanel.tscn" id="2_2ynli"]
+
+[node name="SaveLoadManager" type="CanvasLayer" unique_id=1722276002 node_paths=PackedStringArray("SaveLoadPanelUI")]
+script = ExtResource("1_7585q")
+SaveLoadPanelUI = NodePath("SaveLoadPanel")
+
+[node name="SaveLoadPanel" parent="." unique_id=388136216 instance=ExtResource("2_2ynli")]

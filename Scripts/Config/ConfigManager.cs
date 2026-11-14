@@ -6,9 +6,9 @@ namespace AVG.Scripts;
 public partial class ConfigManager : Node
 {
     public static ConfigManager Instance { get; private set; }
-    public const string ConfigPath = "user://config.json";
+    public static string TitlePath => GamePaths.SceneTitle;
 
-    public ConfigData CurrentConfig { get; private set; } = new();
+    public ConfigData CurrentConfig => SystemData.Config;
 
     [Export] public ConfigPanel ConfigPanelUI;
     
@@ -28,7 +28,7 @@ public partial class ConfigManager : Node
     public override void _Ready()
     {
         Instance = this;
-        LoadConfig();
+        SystemData.Load();
         ApplyAllSettings();
 
         if (ConfigPanelUI != null)
@@ -39,16 +39,33 @@ public partial class ConfigManager : Node
                 SaveConfig();
                 ConfigPanelClose?.Invoke();
             };
-        }
 
-        
+            ConfigPanelUI.ReturnToTitle += ReturnToTitle;
+        }
     }
 
     public void OpenConfigPanel()
     {
-        if (ConfigPanelUI != null)
+        if (ConfigPanelUI == null) return;
+        
+        bool allowReturn = (GetTree().CurrentScene?.SceneFilePath != TitlePath);
+        ConfigPanelUI.OpenPanel(CurrentConfig, allowReturn);
+        
+    }
+
+    private async void ReturnToTitle()
+    {
+        SaveConfig();
+        
+        
+        var tree = GetTree();
+        if (tree?.CurrentScene is DialogueManager dialogue)
         {
-            ConfigPanelUI.OpenPanel(CurrentConfig);
+            await dialogue.CreateAutoSaveDataAsync();
+        }
+        if (tree != null && tree.CurrentScene?.SceneFilePath != TitlePath)
+        {
+            tree.ChangeSceneToFile(TitlePath);
         }
     }
 
@@ -128,19 +145,6 @@ public partial class ConfigManager : Node
 
     public void SaveConfig()
     {
-        using var file = FileAccess.Open(ConfigPath, FileAccess.ModeFlags.Write);
-        if (file == null) return;
-        var json = JsonSerializer.Serialize(CurrentConfig, new JsonSerializerOptions { WriteIndented = true });
-        file.StoreString(json);
-    }
-
-    private void LoadConfig()
-    {
-        if (!FileAccess.FileExists(ConfigPath)) return;
-        using var file = FileAccess.Open(ConfigPath, FileAccess.ModeFlags.Read);
-        if (file == null) return;
-        var json = file.GetAsText();
-        var data = JsonSerializer.Deserialize<ConfigData>(json);
-        if (data != null) CurrentConfig = data;
+        SystemData.Save();
     }
 }
